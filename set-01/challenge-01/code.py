@@ -13,20 +13,41 @@ def largest_exponent(i: int) -> int:
     return exp
 
 
-def int2binstr(n: int) -> str:
-    if n == 0:
-        return '0'
+def int2binstr(n: int, minLength=8) -> str:
 
     res = ''
     while n > 0:
         res = str(n & 1) + res  # prepend odd bit to avoid having to reverse it
         n = n >> 1  # divide by 2
 
+    while len(res) < minLength:
+        res = '0' + res
+
     return res
 
 
 # for number in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
 #     print(f"{number} = {int2binstr(number)}")
+
+def base64Encode(data: List[int]) -> List[int]:
+    padCount = len(data) % 3
+
+    print(f'we need to pad input data {padCount} times')
+
+    # for i in range(0, len(data), 1):
+    for i in range(0, len(data), 3):
+
+        
+
+        threeOctets = data[i+2] + (data[i+1] << 8) + (data[i] << 16)
+        print(f"3 octets: {int2binstr(threeOctets, minLength=24)}")
+
+        byte = data[i]
+
+        print(f'"{byte:3d}" = "{chr(byte):1s}" = {int2binstr(byte):8s}')
+
+    return
+
 
 if __name__ == '__main__':
 
@@ -36,12 +57,6 @@ if __name__ == '__main__':
         for byte in f.read():
             data.append(byte)
 
-        padCount = len(data) % 3
+    encodedData = base64Encode(data)
 
-        print(f'pad input data {padCount} times')
-
-        for i in range(0, len(data), 1):
-        # for i in range(0, len(data), 3):
-            byte=data[i]
-
-            print(f'{byte:3d} = {chr(byte):1s} = {int2binstr(byte):8s}')
+    # print(encodedData)
