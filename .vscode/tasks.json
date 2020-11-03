@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "g++ build active file",
+			"command": "/bin/g++",
+			"args": [
+				"-g",
+				"${file}",
+				"-o",
+				"${workspaceFolder}/out/${fileBasenameNoExtension}.bin"
+			],
+			"options": {
+				"cwd": "/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /bin/g++"
+		}
+	]
+}
