@@ -1,2 +1,4 @@
 *.bin
 out/
+.idea/
+cmake-build-debug/
