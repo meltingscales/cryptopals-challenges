@@ -102,7 +102,7 @@ void dump_binary_simple(char *buffer, int length) {
              << uppercase
              << setw(2)
              << setfill('0')
-             << (uint) (u_char) c;
+             << (unsigned int) (unsigned char) c;
 
         cout.copyfmt(state); //restore format
 
