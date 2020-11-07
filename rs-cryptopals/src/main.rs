@@ -1,7 +1,11 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
 
+// see https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#C_2
+
 use std::{fs::File, io::Read};
 use substring::Substring;
+
+mod bitstring;
 
 fn read_datafile(filepath: String) -> String {
     let mut f: File = match File::open(filepath.clone()) {
@@ -16,6 +20,9 @@ fn read_datafile(filepath: String) -> String {
 }
 
 fn to_base64(s: String) -> String {
+    let base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".as_bytes();
+
+
     let mut data = s.as_bytes().to_vec();
     let mut padding: Vec<u8> = vec![];
     let vec_base64: Vec<u8> = vec![];
@@ -25,14 +32,24 @@ fn to_base64(s: String) -> String {
     if padding_num > 0 {
         while padding_num < 3 {
             padding.push('=' as u8);
-            data.push(0 as u8);
+            data.push('\x00' as u8); // This line specifically ensures we never have to check to see if our input string's length isn't a multiple of 3...
             padding_num += 1;
         }
     }
 
+    println!("padding is {} for {}", String::from_utf8(padding.clone()).unwrap(), s);
+
     // loop over 3 bytes at a time
     for i in (0..data.len()).step_by(3) {
         //TODO lol
+
+        // step over 3 numbers at a time
+        let d1 = (data[i + 0] as u32) << 16;
+        let d2 = (data[i + 1] as u32) << 8;
+        let d3 = (data[i + 2] as u32) << 0;
+
+        // 3 8bit numbers become one 24bit number
+        let n: u32 = d1 + d2 + d3;
     }
 
     // println!("{}", data.len());
@@ -54,7 +71,7 @@ fn to_base64(s: String) -> String {
     let p = String::from_utf8(padding).unwrap();
 
     // remove zero pad
-    r = r.substring(0, (r.len()-p.len())).to_string();
+    r = r.substring(0, r.len() - p.len()).to_string();
 
     // add the padding string
 
@@ -64,6 +81,11 @@ fn to_base64(s: String) -> String {
 }
 
 fn main() {
+    assert_eq!(bitstring::to_bitstring(0b001, 4), "0001");
+    assert_eq!(bitstring::to_bitstring(1, 2), "01");
+    assert_eq!(bitstring::to_bitstring(0xfffffffe as u32, 32), "11111111111111111111111111111110");
+    assert_eq!(bitstring::to_bitstring(0xfffffffe as u32, 31), "1111111111111111111111111111110");
+
     let input_filepath = "../set-01/challenge-01/input";
     let output_filepath = "../set-01/challenge-01/output";
     let table_filepath = "../set-01/challenge-01/table";
@@ -78,7 +100,7 @@ fn main() {
 
     assert_eq!(1, 1);
     assert_eq!("lol", "lol");
-    assert_eq!("lol".to_string().substring(1,2), "o".to_string());
+    assert_eq!("lol".to_string().substring(1, 2), "o".to_string());
     assert_eq!("eA==".to_string(), to_base64("x".to_string()));
     assert_eq!(output, to_base64(input));
 }
