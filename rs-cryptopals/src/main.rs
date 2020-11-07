@@ -12,11 +12,17 @@ fn read_datafile(filepath: String) -> String {
     return contents;
 }
 
+fn toBase64(data: Vec<u8>)->Vec<u8>{
+
+    return vec![1,2,3];
+
+}
+
 fn main() {
     let filepath = "../set-01/challenge-01/input";
 
     println!("Hello, world!");
 
-    let data:String=read_datafile(filepath.to_string());
+    let data: String = read_datafile(filepath.to_string());
     print!("{}", data);
 }
