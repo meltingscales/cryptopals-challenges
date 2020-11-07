@@ -2,10 +2,11 @@
 
 // see https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#C_2
 
+mod bitstring;
+
 use std::{fs::File, io::Read};
 use substring::Substring;
-
-mod bitstring;
+use bitstring::to_bitstring;
 
 fn read_datafile(filepath: String) -> String {
     let mut f: File = match File::open(filepath.clone()) {
@@ -43,13 +44,23 @@ fn to_base64(s: String) -> String {
     for i in (0..data.len()).step_by(3) {
         //TODO lol
 
+        let i1=data[i + 0];
+        let i2=data[i + 1];
+        let i3=data[i + 2];
+
         // step over 3 numbers at a time
-        let d1 = (data[i + 0] as u32) << 16;
-        let d2 = (data[i + 1] as u32) << 8;
-        let d3 = (data[i + 2] as u32) << 0;
+        let d1 = (i1 as u32) << 16;
+        let d2 = (i2 as u32) << 8;
+        let d3 = (i3 as u32) << 0;
+
+        println!("chunk: '{}'", String::from_utf8(vec![i1,i2,i3]).unwrap());
+        println!("d1:  {}", to_bitstring(d1,24));
+        println!("d2:  {}", to_bitstring(d2,24));
+        println!("d3:  {}", to_bitstring(d3,24));
 
         // 3 8bit numbers become one 24bit number
         let n: u32 = d1 + d2 + d3;
+        println!("all: {}\n",to_bitstring(n,24))
     }
 
     // println!("{}", data.len());
@@ -81,10 +92,10 @@ fn to_base64(s: String) -> String {
 }
 
 fn main() {
-    assert_eq!(bitstring::to_bitstring(0b001, 4), "0001");
-    assert_eq!(bitstring::to_bitstring(1, 2), "01");
-    assert_eq!(bitstring::to_bitstring(0xfffffffe as u32, 32), "11111111111111111111111111111110");
-    assert_eq!(bitstring::to_bitstring(0xfffffffe as u32, 31), "1111111111111111111111111111110");
+    assert_eq!(to_bitstring(0b001, 4), "0001");
+    assert_eq!(to_bitstring(1, 2), "01");
+    assert_eq!(to_bitstring(0xfffffffe as u32, 32), "11111111111111111111111111111110");
+    assert_eq!(to_bitstring(0xfffffffe as u32, 31), "1111111111111111111111111111110");
 
     let input_filepath = "../set-01/challenge-01/input";
     let output_filepath = "../set-01/challenge-01/output";
@@ -101,6 +112,6 @@ fn main() {
     assert_eq!(1, 1);
     assert_eq!("lol", "lol");
     assert_eq!("lol".to_string().substring(1, 2), "o".to_string());
-    assert_eq!("eA==".to_string(), to_base64("x".to_string()));
+    assert_eq!("TWFyeSBoYWQgYQ==".to_string(), to_base64("Mary had a".to_string()));
     assert_eq!(output, to_base64(input));
 }
