@@ -1,13 +1,19 @@
+use std::u32::MAX;
+
 pub fn to_bitstring_4bytes(num: u32, _spacing: Option<u32>) -> String {
-    return to_bitstring(num, Some(32), _spacing);
+    return to_bitstring(num, Some(3 * 8), _spacing);
 }
 
 pub fn to_bitstring_byte(num: u32) -> String {
     return to_bitstring(num, Some(8), None);
 }
 
+pub fn to_bitstring_straight(num: u32, _width: Option<u32>) -> String {
+    return to_bitstring(num, _width, Some(MAX));
+}
+
 pub fn to_bitstring(num: u32, _width: Option<u32>, _spacing: Option<u32>) -> String {
-    let width = _width.unwrap_or(32);
+    let width = _width.unwrap_or(4 * 8);
     let spacing = _spacing.unwrap_or(8);
 
     let mut n = num;

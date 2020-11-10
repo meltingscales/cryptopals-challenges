@@ -4,7 +4,7 @@
 
 mod bitstring;
 
-use bitstring::to_bitstring;
+use crate::bitstring::{to_bitstring, to_bitstring_4bytes, to_bitstring_byte};
 use std::{fs::File, io::Read};
 use substring::Substring;
 
@@ -47,25 +47,25 @@ fn to_base64(s: String) -> String {
     for i in (0..data.len()).step_by(3) {
         //TODO lol
 
-        let i1 = data[i + 0];
-        let i2 = data[i + 1];
-        let i3 = data[i + 2];
+        let mut iarr: Vec<u8> = vec![];
+
+        iarr.push(data[i + 0]);
+        iarr.push(data[i + 1]);
+        iarr.push(data[i + 2]);
 
         // step over 3 numbers at a time
-        let d1 = (i1 as u32) << 16;
-        let d2 = (i2 as u32) << 8;
-        let d3 = (i3 as u32) << 0;
+        let d1 = (iarr[0] as u32) << 16;
+        let d2 = (iarr[1] as u32) << 8;
+        let d3 = (iarr[2] as u32) << 0;
 
-        println!("chunk: '{}'", String::from_utf8(vec![i1, i2, i3]).unwrap());
-        println!("d1:  {}", to_bitstring(d1, 24));
-        println!("d2:  {}", to_bitstring(d2, 24));
-        println!("d3:  {}", to_bitstring(d3, 24));
+        // println!("chunk: '{}'", String::from_utf8(vec![i1, i2, i3]).unwrap());
+        println!("d1:  {}", to_bitstring(d1, Some(24), None));
+        println!("d2:  {}", to_bitstring(d2, Some(24), None));
+        println!("d3:  {}", to_bitstring(d3, Some(24), None));
 
         // 3 8bit numbers become one 24bit number
         let n: u32 = d1 + d2 + d3;
-        println!("all: {}\n", to_bitstring(n, 24));
-
-        // let
+        println!("all: {}\n", to_bitstring(n, Some(24), None));
     }
 
     // println!("{}", data.len());
@@ -97,14 +97,22 @@ fn to_base64(s: String) -> String {
 }
 
 fn main() {
-    assert_eq!(to_bitstring(0b001, 4), "0001");
-    assert_eq!(to_bitstring(1, 2), "01");
+    assert_eq!(to_bitstring(0b001, Some(4), Some(4)), "0001");
+    assert_eq!(to_bitstring(1, Some(2), Some(4)), "01");
     assert_eq!(
-        to_bitstring(0xfffffffe as u32, 32),
+        to_bitstring(0xfffffffe as u32, Some(32), Some(32)),
         "11111111111111111111111111111110"
     );
     assert_eq!(
-        to_bitstring(0xfffffffe as u32, 31),
+        to_bitstring_4bytes(0xfffffffe as u32, Some(8)),
+        "11111111 11111111 11111111 11111110"
+    );
+    assert_eq!(
+        to_bitstring(0x00fadfad as u32, Some(24), Some(6)),
+        "111110 101101 111110 101101"
+    );
+    assert_eq!(
+        to_bitstring(0xfffffffe as u32, Some(31), Some(32)),
         "1111111111111111111111111111110"
     );
 
