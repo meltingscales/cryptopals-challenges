@@ -4,7 +4,9 @@
 
 mod bitstring;
 
-use crate::bitstring::{to_bitstring, to_bitstring_4bytes, to_bitstring_byte};
+use crate::bitstring::{
+    to_bitstring, to_bitstring_4bytes, to_bitstring_byte, to_bitstring_straight,
+};
 use std::{fs::File, io::Read};
 use substring::Substring;
 
@@ -44,28 +46,28 @@ fn to_base64(s: String) -> String {
     );
 
     // loop over 3 bytes at a time
-    for i in (0..data.len()).step_by(3) {
-        //TODO lol
-
+    for chunk_pos in (0..data.len()).step_by(3) {
         let mut iarr: Vec<u8> = vec![];
-
-        iarr.push(data[i + 0]);
-        iarr.push(data[i + 1]);
-        iarr.push(data[i + 2]);
+        for i in 0..3 {
+            iarr.push(data[chunk_pos + i]);
+        }
 
         // step over 3 numbers at a time
-        let d1 = (iarr[0] as u32) << 16;
-        let d2 = (iarr[1] as u32) << 8;
-        let d3 = (iarr[2] as u32) << 0;
-
-        // println!("chunk: '{}'", String::from_utf8(vec![i1, i2, i3]).unwrap());
-        println!("d1:  {}", to_bitstring(d1, Some(24), None));
-        println!("d2:  {}", to_bitstring(d2, Some(24), None));
-        println!("d3:  {}", to_bitstring(d3, Some(24), None));
+        let mut darr: Vec<u32> = vec![];
+        let mut dshift = 16;
+        for i in 0..3 {
+            darr.push((iarr[i] as u32) << dshift);
+            dshift -= 8;
+            println!("d{}:  {}", i, to_bitstring(darr[i], Some(24), None));
+        }
 
         // 3 8bit numbers become one 24bit number
-        let n: u32 = d1 + d2 + d3;
+        let n: u32 = darr[0] + darr[1] + darr[2];
         println!("all: {}\n", to_bitstring(n, Some(24), None));
+
+        // let mut o: Vec<u8> = vec![];
+        //
+        // o.append()
     }
 
     // println!("{}", data.len());
