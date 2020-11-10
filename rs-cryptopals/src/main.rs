@@ -23,12 +23,12 @@ fn read_datafile(filepath: String) -> String {
 }
 
 fn to_base64(s: String) -> String {
-    let BASE64CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let BASE64CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".as_bytes();
     let CHUNKSIZE = 3;
 
     let mut data = s.as_bytes().to_vec();
     let mut padding: Vec<u8> = vec![];
-    let vec_base64: Vec<u8> = vec![];
+    let mut vec_base64: Vec<u8> = vec![];
     let mut padding_num = data.len() % CHUNKSIZE;
 
     // add a right zero pad to make the data a multiple of 3 characters
@@ -81,6 +81,9 @@ fn to_base64(s: String) -> String {
                 to_bitstring(oarr[i], Some(6), Some(6)),
                 oarr[i]
             );
+
+            vec_base64.push(BASE64CHARS[oarr[i] as usize]);
+
         }
         println!();
     }
