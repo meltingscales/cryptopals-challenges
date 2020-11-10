@@ -1,7 +1,7 @@
 use std::u32::MAX;
 
 pub fn to_bitstring_4bytes(num: u32, _spacing: Option<u32>) -> String {
-    return to_bitstring(num, Some(3 * 8), _spacing);
+    return to_bitstring(num, Some(4 * 8), _spacing);
 }
 
 pub fn to_bitstring_byte(num: u32) -> String {
