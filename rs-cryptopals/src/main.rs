@@ -21,4 +21,5 @@ mod set01;
 fn main() {
     set01::challenge01::runTest();
     set01::challenge02::runTest();
+    set01::challenge03::runTest();
 }
