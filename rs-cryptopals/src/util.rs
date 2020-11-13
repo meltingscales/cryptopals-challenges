@@ -12,7 +12,7 @@ pub fn read_datafile_bytes(filepath: String) -> Vec<u8> {
 
 /// Read up to `n` bytes starting from 0 from `filepath`.
 pub fn read_datafile_n_bytes(filepath: String, n: usize) -> Vec<u8> {
-    let mut f: File = match File::open(filepath.clone()) {
+    let mut f: File = match File::open(&filepath) {
         Ok(file) => file,
         Err(error) => panic!("Problem opening file '{:?}': {:?}", filepath, error),
     };
@@ -33,7 +33,7 @@ pub fn read_datafile_n_bytes(filepath: String, n: usize) -> Vec<u8> {
 }
 
 pub fn read_datafile(filepath: String) -> String {
-    let mut f: File = match File::open(filepath.clone()) {
+    let mut f: File = match File::open(&filepath) {
         Ok(file) => file,
         Err(error) => panic!("Problem opening file '{:?}': {:?}", filepath, error),
     };
