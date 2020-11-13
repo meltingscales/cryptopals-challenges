@@ -1,3 +1,4 @@
+use crate::byteutil::byte_frequency;
 use crate::util::{printHeader, read_datafile, read_datafile_bytes, read_datafile_n_bytes};
 use std::collections::HashMap;
 use std::string::FromUtf8Error;
@@ -11,20 +12,10 @@ pub fn runTest() {
         100_000,
     );
 
-    let mut char_freq: HashMap<u8, u128> = HashMap::new();
+    let char_freq: HashMap<u8, u128> = byte_frequency(&bible_input);
 
-    // go over every char in input and add up how many times they show up
-    for i in 0..bible_input.len() {
-        let byte: u8 = *bible_input.get(i).unwrap();
-        if char_freq.contains_key(&byte) {
-            // increment 1, we've seen this key already
-            char_freq.insert(byte, char_freq.get(&byte).unwrap() + (1));
-        } else {
-            // we've never seen this key before, put '1'
-            char_freq.insert(byte, 1);
-        }
-    }
-
+    let total_chars: usize = bible_input.len();
+    println!("Total chars: {}", total_chars);
     for (byte, occurrences) in char_freq.into_iter() {
         // if we get UTF8Error, return "???"
         let mut char = match String::from_utf8(vec![byte]) {
@@ -32,10 +23,17 @@ pub fn runTest() {
             Ok(c) => c,
         };
 
+        // handle newlines
         if char == "\n" || char == "\r" {
             char = "\\n".to_string()
         }
 
-        println!("{:3} aka `{}` occurs {} times.", byte, char, occurrences);
+        println!(
+            "{:3} or [{:^5}] occurs {:6} times/total = {3:.5}%",
+            byte,
+            char,
+            occurrences,
+            (occurrences as f64 / (total_chars as f64)) * 100.0
+        );
     }
 }

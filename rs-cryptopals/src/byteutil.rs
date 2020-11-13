@@ -1,4 +1,5 @@
 use hex::FromHexError;
+use std::collections::HashMap;
 
 #[test]
 fn test_hexstring_to_bytes() {
@@ -25,6 +26,25 @@ pub fn decode_hex(s: String) -> Result<Vec<u8>, FromHexError> {
 // TODO: Implement this yourself and don't use the method.
 pub fn encode_hex(s: Vec<u8>) -> String {
     return hex::encode(s);
+}
+
+/// Given a list of bytes, return the frequency at which each byte occurs.
+pub fn byte_frequency(bytes: &Vec<u8>) -> HashMap<u8, u128> {
+    let mut char_freq: HashMap<u8, u128> = HashMap::new();
+
+    // go over every char in input and add up how many times they show up
+    for i in 0..bytes.len() {
+        let byte: u8 = bytes[i];
+        if char_freq.contains_key(&byte) {
+            // increment 1, we've seen this key already
+            char_freq.insert(byte, char_freq.get(&byte).unwrap() + (1));
+        } else {
+            // we've never seen this key before, put '1'
+            char_freq.insert(byte, 1);
+        }
+    }
+
+    return char_freq;
 }
 
 /// Take 2 `vec<u8>` and xor them.

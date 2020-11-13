@@ -15,7 +15,7 @@ pub fn runTest() {
 
     println!(
         "Does base64('{}') == '{}'?\n {}.",
-        input.clone(),
+        &input,
         to_base64(input.clone()),
         to_base64(input.clone()) == expectedOutput
     );
