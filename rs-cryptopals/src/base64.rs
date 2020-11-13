@@ -2,6 +2,9 @@ use substring::Substring;
 
 #[test]
 fn testBase64Encode() {
+    assert_eq!("Rg==".to_string(), to_base64("F".to_string()));
+    assert_eq!("RkZG".to_string(), to_base64("FFF".to_string()));
+
     assert_eq!(
         "TWFyeSBoYWQgYQ==".to_string(),
         to_base64("Mary had a".to_string())
@@ -11,8 +14,6 @@ fn testBase64Encode() {
         "TWFyeSBoYWQ=".to_string(),
         to_base64("Mary had".to_string())
     );
-    assert_eq!("F".to_string(), to_base64("Rg==".to_string()));
-    assert_eq!("FFF".to_string(), to_base64("RkZG".to_string()));
 }
 
 pub fn to_base64(s: String) -> String {
