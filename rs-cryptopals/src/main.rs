@@ -13,10 +13,12 @@
 
 mod base64;
 mod bitstring;
+mod byteutil;
 mod util;
 
 mod set01;
 
 fn main() {
     set01::challenge01::runTest();
+    set01::challenge02::runTest();
 }

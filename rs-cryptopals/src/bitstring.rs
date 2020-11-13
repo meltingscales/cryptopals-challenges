@@ -3,11 +3,11 @@ use std::u32::MAX;
 #[test]
 pub fn testBitstringFn() {
     // Test bit shifting...
-    println!(
-        "{} >> 2 = {}",
-        to_bitstring_straight(0b11101, Some(5)),
-        to_bitstring_straight(0b11101 >> 2, Some(5))
-    );
+    // println!(
+    //     "{} >> 2 = {}",
+    //     to_bitstring_straight(0b11101, Some(5)),
+    //     to_bitstring_straight(0b11101 >> 2, Some(5))
+    // );
 
     assert_eq!(to_bitstring(0b001, Some(4), Some(4)), "0001");
     assert_eq!(to_bitstring(1, Some(2), Some(4)), "01");

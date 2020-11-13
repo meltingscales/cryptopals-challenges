@@ -1,6 +1,10 @@
 use std::fs::File;
 use std::io::Read;
 
+pub fn printHeader(s: String) {
+    println!(" *** {} ***", s);
+}
+
 pub fn read_datafile(filepath: String) -> String {
     let mut f: File = match File::open(filepath.clone()) {
         Ok(file) => file,

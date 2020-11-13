@@ -1,7 +1,7 @@
 use substring::Substring;
 
 #[test]
-fn testBase64Encode() {
+fn test_base64encode() {
     assert_eq!("Rg==".to_string(), to_base64("F".to_string()));
     assert_eq!("RkZG".to_string(), to_base64("FFF".to_string()));
 
