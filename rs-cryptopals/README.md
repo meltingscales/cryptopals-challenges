@@ -2,6 +2,10 @@
 
     cargo build
 
-## Running
+## Running all exercises
 
     cargo run
+    
+### Tests
+
+    cargo test

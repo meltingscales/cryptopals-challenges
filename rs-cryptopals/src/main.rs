@@ -1,6 +1,12 @@
 #![cfg_attr(
     debug_assertions,
-    allow(dead_code, unused_variables, unused_parens, non_snake_case)
+    allow(
+        dead_code,
+        unused_variables,
+        unused_imports,
+        unused_parens,
+        non_snake_case
+    )
 )]
 
 // see https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#Javascript

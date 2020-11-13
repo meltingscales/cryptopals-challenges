@@ -1,5 +1,34 @@
 use std::u32::MAX;
 
+#[test]
+pub fn testBitstringFn() {
+    // Test bit shifting...
+    println!(
+        "{} >> 2 = {}",
+        to_bitstring_straight(0b11101, Some(5)),
+        to_bitstring_straight(0b11101 >> 2, Some(5))
+    );
+
+    assert_eq!(to_bitstring(0b001, Some(4), Some(4)), "0001");
+    assert_eq!(to_bitstring(1, Some(2), Some(4)), "01");
+    assert_eq!(
+        to_bitstring(0xfffffffe as u32, Some(32), Some(32)),
+        "11111111111111111111111111111110"
+    );
+    assert_eq!(
+        to_bitstring_4bytes(0xfffffffe as u32, Some(8)),
+        "11111111 11111111 11111111 11111110"
+    );
+    assert_eq!(
+        to_bitstring(0x00fadfad as u32, Some(24), Some(6)),
+        "111110 101101 111110 101101"
+    );
+    assert_eq!(
+        to_bitstring(0xfffffffe as u32, Some(31), Some(32)),
+        "1111111111111111111111111111110"
+    );
+}
+
 pub fn to_bitstring_4bytes(num: u32, _spacing: Option<u32>) -> String {
     return to_bitstring(num, Some(4 * 8), _spacing);
 }
