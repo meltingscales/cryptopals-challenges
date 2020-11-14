@@ -83,16 +83,16 @@ pub fn to_base64(s: String) -> String {
     }
 
     let mut return_val = String::from_utf8(vec_base64).unwrap();
-    let p = String::from_utf8(padding_bytes).unwrap();
+    let padding = String::from_utf8(padding_bytes).unwrap();
 
     // remove zero pad
     return_val = return_val
-        .substring(0, return_val.len() - p.len())
+        .substring(0, return_val.len() - padding.len())
         .to_string();
 
     // add the padding string
 
-    return_val.push_str(p.as_str());
+    return_val.push_str(padding.as_str());
 
     return return_val;
 }

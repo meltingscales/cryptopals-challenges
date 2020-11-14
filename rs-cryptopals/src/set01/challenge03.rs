@@ -24,8 +24,10 @@ pub fn runTest() {
         };
 
         // handle newlines
-        if char == "\n" || char == "\r" {
+        if char == "\n" {
             char = "\\n".to_string()
+        } else if char == "\r" {
+            char = "\\r".to_string()
         }
 
         println!(
@@ -33,7 +35,7 @@ pub fn runTest() {
             byte,
             char,
             occurrences,
-            (occurrences as f64 / (total_chars as f64)) * 100.0
+            ((occurrences as f64) / (total_chars as f64)) * 100.0
         );
     }
 }
