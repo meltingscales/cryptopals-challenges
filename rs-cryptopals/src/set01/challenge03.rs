@@ -12,7 +12,7 @@ pub fn runTest() {
         100_000,
     );
 
-    let char_freq: HashMap<u8, u128> = byte_frequency(&bible_input);
+    let char_freq: HashMap<u8, u32> = byte_frequency(&bible_input);
 
     let total_chars: usize = bible_input.len();
     println!("Total chars: {}", total_chars);

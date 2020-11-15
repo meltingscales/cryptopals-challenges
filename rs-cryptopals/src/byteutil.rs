@@ -29,19 +29,14 @@ pub fn encode_hex(s: Vec<u8>) -> String {
 }
 
 /// Given a list of bytes, return the frequency at which each byte occurs.
-pub fn byte_frequency(bytes: &Vec<u8>) -> HashMap<u8, u128> {
-    let mut char_freq: HashMap<u8, u128> = HashMap::new();
+pub fn byte_frequency(bytes: &Vec<u8>) -> HashMap<u8, u32> {
+    let mut char_freq: HashMap<u8, u32> = HashMap::new();
 
     // go over every char in input and add up how many times they show up
     for i in 0..bytes.len() {
         let byte: u8 = bytes[i];
-        if char_freq.contains_key(&byte) {
-            // increment 1, we've seen this key already
-            char_freq.insert(byte, char_freq.get(&byte).unwrap() + (1));
-        } else {
-            // we've never seen this key before, put '1'
-            char_freq.insert(byte, 1);
-        }
+
+        *char_freq.entry(byte).or_insert(0) += 1;
     }
 
     return char_freq;
